@@ -1,0 +1,3 @@
+ARG CHECKMK_VERSION
+
+FROM checkmk/check-mk-raw:${CHECKMK_VERSION}

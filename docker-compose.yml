@@ -1,0 +1,209 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    hostname: elasticsearch
+    container_name: elasticsearch
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch-data
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      discovery.type: single-node
+    networks:
+      - elk
+
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    hostname: logstash
+    container_name: logstash
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5044:5044"
+      - "5001:5000"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    hostname: kibana
+    container_name: kibana
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  fluentd:
+    build:
+      context: fluentd/
+      args:
+        FLUENTD_VERSION: $FLUENTD_VERSION
+    hostname: fluentd
+    container_name: fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    volumes:
+      - type: bind
+        source: ./fluentd/config/fluent.conf
+        target: /fluentd/etc/fluent.conf
+        read_only: true
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  grafana:
+    build:
+      context: grafana/
+      args:
+        GRAFANA_VERSION: $GRAFANA_VERSION
+    hostname: grafana
+    container_name: grafana
+    ports:
+      - 9000:3000
+    volumes:
+      - type: volume
+        source: grafana-data
+        target: /var/lib/grafana
+      - type: bind
+        source: ./grafana/config/grafana.ini
+        target: /etc/grafana/grafana.ini
+      - type: bind
+        source: ./grafana/config/datasources
+        target: /etc/grafana/provisioning/datasources
+    networks:
+      - elk
+    depends_on:
+      - prometheus
+
+  checkmk:
+    build:
+      context: checkmk/
+      args:
+        CHECKMK_VERSION: $CHECKMK_VERSION
+    hostname: checkmk
+    container_name: checkmk
+    ports:
+      - "8081:5000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: volume
+        source: checkmk-data
+        target: /omd/sites
+      - type: bind 
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      - elk
+
+  prometheus:
+    build:
+      context: prometheus/
+      args:
+        PROMETHEUS_VERSION: $PROMETHEUS_VERSION
+    hostname: prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - type: bind
+        source: ./prometheus/config/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        read_only: true
+    networks:
+      - elk
+    depends_on:
+      - prometheus-fed
+
+  prometheus-fed:
+    build:
+      context: prometheus/
+      args:
+        PROMETHEUS_VERSION: $PROMETHEUS_VERSION
+    hostname: prometheus-fed
+    container_name: prometheus-fed
+    ports:
+      - "9091:9090"
+    volumes:
+      - type: bind
+        source: ./prometheus/config-fed/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        read_only: true
+    networks:
+      - elk
+
+  jenkins:
+    build:
+      context: jenkins/
+      args:
+        JENKINS_VERSION: $JENKINS_VERSION
+    hostname: jenkins
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - type: volume
+        source: jenkins-data
+        target: /var/jenkins_home
+    networks:
+      - elk
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "tcp://docker.for.mac.localhost:24224" # mac
+        # fluentd-address: "tcp://fluentd:24224" # linux
+
+networks:
+  elk:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
+  grafana-data:
+  checkmk-data:
+  jenkins-data:

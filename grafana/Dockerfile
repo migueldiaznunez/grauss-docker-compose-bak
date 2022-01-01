@@ -1,0 +1,3 @@
+ARG GRAFANA_VERSION
+
+FROM grafana/grafana:${GRAFANA_VERSION}
