@@ -81,7 +81,7 @@ services:
     container_name: fluentd
     ports:
       - "24224:24224"
-      - "24224:24224/udp"
+#      - "24224:24224/udp"
     volumes:
       - type: bind
         source: ./fluentd/config/fluent.conf
@@ -170,6 +170,23 @@ services:
       - type: bind
         source: ./prometheus/config-fed/prometheus.yml
         target: /etc/prometheus/prometheus.yml
+        read_only: true
+    networks:
+      - elk
+
+  alertmanager:
+    build:
+      context: alertmanager/
+      args:
+        ALERTMANAGER_VERSION: $ALERTMANAGER_VERSION
+    hostname: alertmanager
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - type: bind
+        source: ./alertmanager/config/alertmanager.yml
+        target: /etc/alertmanager/alertmanager.yml
         read_only: true
     networks:
       - elk
