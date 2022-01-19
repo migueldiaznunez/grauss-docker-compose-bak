@@ -171,6 +171,10 @@ services:
         source: ./prometheus/config-fed/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         read_only: true
+      - type: bind
+        source: ./prometheus/config-fed/rules.yml
+        target: /etc/prometheus/rules.yml
+        read_only: true
     networks:
       - elk
 
