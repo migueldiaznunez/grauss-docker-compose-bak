@@ -8,8 +8,8 @@ In this project we want to demonstrate the grauss project, which lays the founda
 
 Docker requirements:
 
-- CPU: <2
-- Memory: <8GB
+- CPU: 2
+- Memory: 8GB
 
 ### Docker Daemon
 
