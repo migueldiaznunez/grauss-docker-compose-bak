@@ -1,6 +1,31 @@
 version: '3.8'
 
 services:
+
+  nginx:
+    build:
+      context: nginx/
+      args:
+        NGINX_VERSION: $NGINX_VERSION
+    hostname: nginx
+    container_name: nginx
+    volumes:
+      - type: bind
+        source: ./nginx/config/conf.d
+        target: /etc/nginx/conf.d/
+        read_only: true
+    ports:
+      - "80:80"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+      - alertmanager
+      - prometheus
+      - prometheus-fed
+      - jenkins
+      - kibana
+
   elasticsearch:
     build:
       context: elasticsearch/
@@ -65,8 +90,8 @@ services:
         source: ./kibana/config/kibana.yml
         target: /usr/share/kibana/config/kibana.yml
         read_only: true
-    ports:
-      - "5601:5601"
+#    ports:
+#      - "5601:5601"
     networks:
       - elk
     depends_on:
@@ -99,8 +124,8 @@ services:
         GRAFANA_VERSION: $GRAFANA_VERSION
     hostname: grafana
     container_name: grafana
-    ports:
-      - 9000:3000
+#    ports:
+#      - 9000:3000
     volumes:
       - type: volume
         source: grafana-data
@@ -116,28 +141,6 @@ services:
     depends_on:
       - prometheus
 
-  checkmk:
-    build:
-      context: checkmk/
-      args:
-        CHECKMK_VERSION: $CHECKMK_VERSION
-    hostname: checkmk
-    container_name: checkmk
-    ports:
-      - "8081:5000"
-    stdin_open: true
-    tty: true
-    volumes:
-      - type: volume
-        source: checkmk-data
-        target: /omd/sites
-      - type: bind 
-        source: /etc/localtime
-        target: /etc/localtime
-        read_only: true
-    networks:
-      - elk
-
   prometheus:
     build:
       context: prometheus/
@@ -145,8 +148,8 @@ services:
         PROMETHEUS_VERSION: $PROMETHEUS_VERSION
     hostname: prometheus
     container_name: prometheus
-    ports:
-      - "9090:9090"
+#    ports:
+#      - "9090:9090"
     volumes:
       - type: bind
         source: ./prometheus/config/prometheus.yml
@@ -164,8 +167,8 @@ services:
         PROMETHEUS_VERSION: $PROMETHEUS_VERSION
     hostname: prometheus-fed
     container_name: prometheus-fed
-    ports:
-      - "9091:9090"
+#    ports:
+#      - "9091:9090"
     volumes:
       - type: bind
         source: ./prometheus/config-fed/prometheus.yml
@@ -185,8 +188,8 @@ services:
         ALERTMANAGER_VERSION: $ALERTMANAGER_VERSION
     hostname: alertmanager
     container_name: alertmanager
-    ports:
-      - "9093:9093"
+#    ports:
+#      - "9093:9093"
     volumes:
       - type: bind
         source: ./alertmanager/config/alertmanager.yml
@@ -203,7 +206,7 @@ services:
     hostname: jenkins
     container_name: jenkins
     ports:
-      - "8080:8080"
+#      - "8082:8080"
       - "50000:50000"
     volumes:
       - type: volume
@@ -226,5 +229,4 @@ networks:
 volumes:
   elasticsearch-data:
   grafana-data:
-  checkmk-data:
   jenkins-data:
