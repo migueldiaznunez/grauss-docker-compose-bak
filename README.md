@@ -24,6 +24,11 @@ Change the docker daemon:
 
 ## Install
 
+Add to /etc/hosts file:
+```
+127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local
+```
+
 Use Docker Compose to install this solution
 
 ```
@@ -39,13 +44,12 @@ Urls:
 
 | App | URL | User | Pass |
 |-----|-----|------|------|
-|Kibana|[http://localhost:5601](http://localhost:5601)| elastic | changeme |
-|Grafana|[http://localhost:9000](http://localhost:9000)| admin |admin|
-|Prometheus|[http://localhost:9090](http://localhost:9090)| | |
-|Prometheus Federated|[http://localhost:9091](http://localhost:9091) | |
-|Alertmanager|[http://localhost:9093](http://localhost:9093) | |
-|Checkmk|[http://localhost:8081](http://localhost:8081)| | |
-|Jenkins|[http://localhost:8080](http://localhost:8080)| | |
+|Kibana|[http://kibana.grauss.local](http://kibana.grauss.local)| elastic | changeme |
+|Grafana|[http://grafana.grauss.local](http://grafana.grauss.local)| admin |admin|
+|Prometheus|[http://prometheus.grauss.local](http://prometheus.grauss.local)| | |
+|Prometheus Federated|[http://prometheus-fed.grauss.local](http://prometheus-fed.grauss.local) | |
+|Alertmanager|[http://alertmanager.grauss.local](http://alertmanager.grauss.local) | |
+|Jenkins|[http://jenkins.grauss.local](http://jenkins.grauss.local)| | |
 
 #### Jenkins
 To get the pass:
@@ -54,16 +58,9 @@ To get the pass:
 $ docker-compose logs -f jenkins
 ```
 
-#### Checkmk
-
-To get the pass:
-
-```
-$ docker-compose logs -f checkmk
-```
-
 ### Docker Images
 
+* [Nginx](https://hub.docker.com/_/nginx)
 * [ElasticSearch](https://hub.docker.com/_/elasticsearch)
 * [Kibana](https://hub.docker.com/_/kibana)
 * [Logstash](https://hub.docker.com/_/logstash)
@@ -71,6 +68,5 @@ $ docker-compose logs -f checkmk
 * [Grafana](https://hub.docker.com/r/grafana/grafana)
 * [Prometheus](https://hub.docker.com/r/prom/prometheus)
 * [Alertmanager](https://hub.docker.com/r/prom/alertmanager)
-* [Checkmk](https://hub.docker.com/r/checkmk/check-mk-raw)
 * [Jenkins](https://hub.docker.com/r/jenkins/jenkins)
 * [Fluentd](https://hub.docker.com/_/fluentd)
