@@ -25,6 +25,7 @@ services:
       - prometheus-fed
       - jenkins
       - kibana
+      - grafana
 
   elasticsearch:
     build:
@@ -177,6 +178,10 @@ services:
       - type: bind
         source: ./prometheus/config-fed/rules.yml
         target: /etc/prometheus/rules.yml
+        read_only: true
+      - type: bind
+        source: ./prometheus/config-fed/credentials
+        target: /etc/prometheus/credentials
         read_only: true
     networks:
       - garuss-network

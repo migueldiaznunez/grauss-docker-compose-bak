@@ -39,6 +39,7 @@ scrape_configs:
         - '{job="docker-linux"}'
         - '{job="docker-mac"}'
         - '{job="jenkins"}'
+        - '{job="vault"}'
         - '{__name__=~"job:.*"}'
     scheme: http
     static_configs:
