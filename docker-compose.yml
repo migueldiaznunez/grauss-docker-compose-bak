@@ -17,7 +17,7 @@ services:
     ports:
       - "80:80"
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - elasticsearch
       - alertmanager
@@ -49,7 +49,7 @@ services:
       ELASTIC_PASSWORD: changeme
       discovery.type: single-node
     networks:
-      - elk
+      - garuss-network
 
   logstash:
     build:
@@ -74,7 +74,7 @@ services:
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - elasticsearch
 
@@ -93,7 +93,7 @@ services:
 #    ports:
 #      - "5601:5601"
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - elasticsearch
 
@@ -113,7 +113,7 @@ services:
         target: /fluentd/etc/fluent.conf
         read_only: true
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - elasticsearch
 
@@ -137,7 +137,7 @@ services:
         source: ./grafana/config/datasources
         target: /etc/grafana/provisioning/datasources
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - prometheus
 
@@ -156,7 +156,7 @@ services:
         target: /etc/prometheus/prometheus.yml
         read_only: true
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - prometheus-fed
 
@@ -179,7 +179,7 @@ services:
         target: /etc/prometheus/rules.yml
         read_only: true
     networks:
-      - elk
+      - garuss-network
 
   alertmanager:
     build:
@@ -196,7 +196,7 @@ services:
         target: /etc/alertmanager/alertmanager.yml
         read_only: true
     networks:
-      - elk
+      - garuss-network
 
   jenkins:
     build:
@@ -213,7 +213,7 @@ services:
         source: jenkins-data
         target: /var/jenkins_home
     networks:
-      - elk
+      - garuss-network
     depends_on:
       - fluentd
     logging:
@@ -222,11 +222,60 @@ services:
         fluentd-address: "tcp://docker.for.mac.localhost:24224" # mac
         # fluentd-address: "tcp://fluentd:24224" # linux
 
+  vault:
+    build:
+      context: ./vault
+      args:
+        VAULT_VERSION: $VAULT_VERSION
+    hostname: vault
+    container_name: vault
+    ports:
+      - 8200:8200
+    volumes:
+      - type: volume
+        source: vault-data
+        target: /vault/data
+      - type: bind
+        source: ./vault/config
+        target: /vault/config
+      - type: bind
+        source: ./vault/policies
+        target: /vault/policies
+    command: "server"
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - garuss-network
+    depends_on:
+      - consul
+
+  consul:
+    build:
+      context: ./consul
+      args:
+        CONSUL_VERSION: $CONSUL_VERSION
+    hostname: consul
+    container_name: consul
+    ports:
+      - 8500:8500
+    command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+    volumes:
+      - type: volume
+        source: consul-data
+        target: /consul/data
+      - type: bind
+        source: ./consul/config
+        target: /consul/config
+    networks:
+      - garuss-network
+
 networks:
-  elk:
+  garuss-network:
     driver: bridge
 
 volumes:
   elasticsearch-data:
   grafana-data:
   jenkins-data:
+  vault-data:
+  consul-data:
