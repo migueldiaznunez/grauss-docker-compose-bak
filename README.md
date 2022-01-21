@@ -26,7 +26,7 @@ Change the docker daemon:
 
 Add to /etc/hosts file:
 ```
-127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local
+127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local
 ```
 
 Use Docker Compose to install this solution
@@ -50,6 +50,8 @@ Urls:
 |Prometheus Federated|[http://prometheus-fed.grauss.local](http://prometheus-fed.grauss.local) | |
 |Alertmanager|[http://alertmanager.grauss.local](http://alertmanager.grauss.local) | |
 |Jenkins|[http://jenkins.grauss.local](http://jenkins.grauss.local)| | |
+|Vault|[http://vault.grauss.local](http://vault.grauss.local)| | |
+|Consul|[http://consul.grauss.local](http://consul.grauss.local)| | |
 
 #### Jenkins
 To get the pass:
@@ -70,3 +72,5 @@ $ docker-compose logs -f jenkins
 * [Alertmanager](https://hub.docker.com/r/prom/alertmanager)
 * [Jenkins](https://hub.docker.com/r/jenkins/jenkins)
 * [Fluentd](https://hub.docker.com/_/fluentd)
+* [Vault](https://hub.docker.com/_/vault)
+* [Consul](https://hub.docker.com/_/consul)
