@@ -41,9 +41,9 @@ services:
       - type: volume
         source: elasticsearch-data
         target: /usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: changeme
@@ -67,10 +67,10 @@ services:
         source: ./logstash/pipeline
         target: /usr/share/logstash/pipeline
         read_only: true
-    ports:
-      - "5044:5044"
-      - "5001:5000"
-      - "9600:9600"
+#    ports:
+#      - "5044:5044"
+#      - "5001:5000"
+#      - "9600:9600"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
@@ -105,7 +105,7 @@ services:
     hostname: fluentd
     container_name: fluentd
     ports:
-      - "24224:24224"
+      - "24224:24224" # Workaround 
 #      - "24224:24224/udp"
     volumes:
       - type: bind
@@ -205,9 +205,9 @@ services:
         JENKINS_VERSION: $JENKINS_VERSION
     hostname: jenkins
     container_name: jenkins
-    ports:
+#    ports:
 #      - "8082:8080"
-      - "50000:50000"
+#      - "50000:50000"
     volumes:
       - type: volume
         source: jenkins-data
@@ -229,8 +229,8 @@ services:
         VAULT_VERSION: $VAULT_VERSION
     hostname: vault
     container_name: vault
-    ports:
-      - 8200:8200
+#    ports:
+#      - 8200:8200
     volumes:
       - type: volume
         source: vault-data
@@ -256,8 +256,8 @@ services:
         CONSUL_VERSION: $CONSUL_VERSION
     hostname: consul
     container_name: consul
-    ports:
-      - 8500:8500
+#    ports:
+#      - 8500:8500
     command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
     volumes:
       - type: volume
