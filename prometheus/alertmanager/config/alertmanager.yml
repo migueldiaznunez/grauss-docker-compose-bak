@@ -1,0 +1,13 @@
+global:
+#  slack_api_url: 'https://hooks.slack.com/services/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'
+  slack_api_url: 'https://hooks.slack.com/services/T02RL8STM0C/B02UR70N9QC/yvzn3Xj1QkoVDl29wth6S4T'
+
+route:
+  receiver: 'slack-notifications'
+  group_by: [alertname, datacenter, app]
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#develop'
+    text: 'TEST22'

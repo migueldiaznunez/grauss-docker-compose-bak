@@ -27,6 +27,7 @@ Change the docker daemon:
 Add to /etc/hosts file:
 ```
 127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local
+{{vagrant_vm-grauss-poc_ip}} vm-grauss-poc
 ```
 
 Use Docker Compose to install this solution
