@@ -6,6 +6,8 @@ In this project we want to demonstrate the grauss project, which lays the founda
 
 ## Requirements
 
+Review this repo [grauss-vagrant](https://github.com/migueldiaznunez/grauss-vagrant)
+
 Docker requirements:
 
 - CPU: 2
