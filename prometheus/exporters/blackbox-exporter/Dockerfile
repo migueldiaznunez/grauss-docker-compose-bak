@@ -1,0 +1,3 @@
+ARG BLACKBOX_VERSION
+
+FROM prom/blackbox-exporter:${BLACKBOX_VERSION}

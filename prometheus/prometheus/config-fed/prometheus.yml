@@ -46,3 +46,15 @@ scrape_configs:
     static_configs:
       - targets: 
         - "jenkins:8080"
+
+  - job_name: vault
+    metrics_path: /v1/sys/metrics
+    params:
+      format: 
+        - 'prometheus'
+    scheme: http
+    authorization:
+      credentials_file: /etc/prometheus/credentials/vault.file
+    static_configs:
+      - targets: 
+        - 'vault:8200'
