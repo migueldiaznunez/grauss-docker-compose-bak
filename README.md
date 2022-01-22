@@ -74,3 +74,4 @@ $ docker-compose logs -f jenkins
 * [Fluentd](https://hub.docker.com/_/fluentd)
 * [Vault](https://hub.docker.com/_/vault)
 * [Consul](https://hub.docker.com/_/consul)
+* [Blackbox-expoerter](https://hub.docker.com/r/prom/blackbox-exporter/)
