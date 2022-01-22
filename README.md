@@ -27,7 +27,6 @@ Change the docker daemon:
 Add to /etc/hosts file:
 ```
 127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local
-{{vagrant_vm-grauss-poc_ip}} vm-grauss-poc
 ```
 
 Use Docker Compose to install this solution
@@ -75,3 +74,4 @@ $ docker-compose logs -f jenkins
 * [Fluentd](https://hub.docker.com/_/fluentd)
 * [Vault](https://hub.docker.com/_/vault)
 * [Consul](https://hub.docker.com/_/consul)
+* [Blackbox-expoerter](https://hub.docker.com/r/prom/blackbox-exporter/)
