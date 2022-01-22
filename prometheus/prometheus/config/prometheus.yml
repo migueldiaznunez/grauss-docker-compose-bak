@@ -40,6 +40,8 @@ scrape_configs:
         - '{job="docker-mac"}'
         - '{job="jenkins"}'
         - '{job="vault"}'
+        - '{job="blackbox_http"}'
+        - '{job="blackbox_tcp"}'
         - '{__name__=~"job:.*"}'
     scheme: http
     static_configs:

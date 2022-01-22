@@ -58,4 +58,3 @@ scrape_configs:
     static_configs:
       - targets: 
         - 'vault:8200'
-

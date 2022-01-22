@@ -144,7 +144,7 @@ services:
 
   prometheus:
     build:
-      context: prometheus/
+      context: prometheus/prometheus/
       args:
         PROMETHEUS_VERSION: $PROMETHEUS_VERSION
     hostname: prometheus
@@ -153,7 +153,7 @@ services:
 #      - "9090:9090"
     volumes:
       - type: bind
-        source: ./prometheus/config/prometheus.yml
+        source: ./prometheus/prometheus/config/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         read_only: true
     networks:
@@ -163,7 +163,7 @@ services:
 
   prometheus-fed:
     build:
-      context: prometheus/
+      context: prometheus/prometheus/
       args:
         PROMETHEUS_VERSION: $PROMETHEUS_VERSION
     hostname: prometheus-fed
@@ -172,15 +172,15 @@ services:
 #      - "9091:9090"
     volumes:
       - type: bind
-        source: ./prometheus/config-fed/prometheus.yml
+        source: ./prometheus/prometheus/config-fed/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         read_only: true
       - type: bind
-        source: ./prometheus/config-fed/rules.yml
+        source: ./prometheus/prometheus/config-fed/rules.yml
         target: /etc/prometheus/rules.yml
         read_only: true
       - type: bind
-        source: ./prometheus/config-fed/credentials
+        source: ./prometheus/prometheus/config-fed/credentials
         target: /etc/prometheus/credentials
         read_only: true
     networks:
@@ -188,7 +188,7 @@ services:
 
   alertmanager:
     build:
-      context: alertmanager/
+      context: prometheus/alertmanager/
       args:
         ALERTMANAGER_VERSION: $ALERTMANAGER_VERSION
     hostname: alertmanager
@@ -197,8 +197,25 @@ services:
 #      - "9093:9093"
     volumes:
       - type: bind
-        source: ./alertmanager/config/alertmanager.yml
+        source: ./prometheus/alertmanager/config/alertmanager.yml
         target: /etc/alertmanager/alertmanager.yml
+        read_only: true
+    networks:
+      - garuss-network
+
+  blackbox:
+    build:
+      context: prometheus/exporters/blackbox-exporter/
+      args:
+        BLACKBOX_VERSION: $BLACKBOX_VERSION
+    hostname: blackbox
+    container_name: blackbox
+#    ports:
+#      - "9115:9115"
+    volumes:
+      - type: bind
+        source: ./prometheus/exporters/blackbox-exporter/config/config.yml
+        target: /etc/blackbox_exporter/config.yml
         read_only: true
     networks:
       - garuss-network
