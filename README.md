@@ -28,7 +28,7 @@ Change the docker daemon:
 
 Add to /etc/hosts file:
 ```
-127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local
+127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local keycloak.grauss.local
 ```
 
 Use Docker Compose to install this solution
@@ -54,6 +54,7 @@ Urls:
 |Jenkins|[http://jenkins.grauss.local](http://jenkins.grauss.local)| | |
 |Vault|[http://vault.grauss.local](http://vault.grauss.local)| | |
 |Consul|[http://consul.grauss.local](http://consul.grauss.local)| | |
+|Keycloak|[http://keycloak.grauss.local](http://keycloak.grauss.local)| admin | Pa55w0rd |
 
 #### Jenkins
 To get the pass:
@@ -77,3 +78,4 @@ $ docker-compose logs -f jenkins
 * [Vault](https://hub.docker.com/_/vault)
 * [Consul](https://hub.docker.com/_/consul)
 * [Blackbox-exporter](https://hub.docker.com/r/prom/blackbox-exporter/)
+* [Keycloak](https://hub.docker.com/r/jboss/keycloak/)
