@@ -26,6 +26,7 @@ services:
       - jenkins
       - kibana
       - grafana
+      - keycloak
 
   elasticsearch:
     build:
@@ -291,6 +292,51 @@ services:
     networks:
       - garuss-network
 
+  postgres-keycloak:
+    build:
+      context: ./keycloak/postgres
+      args:
+        KEYCLOAK_POSTGRES_VERSION: $KEYCLOAK_POSTGRES_VERSION
+    hostname: postgres-keycloak
+    container_name: postgres-keycloak
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    volumes:
+      - type: volume
+        source: keycloak-postgress-data
+        target: /var/lib/postgresql/data
+    networks:
+      - garuss-network
+
+  keycloak:
+    build:
+      context: ./keycloak/keycloak
+      args:
+        KEYCLOAK_VERSION: $KEYCLOAK_VERSION
+    hostname: keycloak
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      PROXY_ADDRESS_FORWARDING: true
+      KEYCLOAK_FRONTEND_URL: http://keycloak.grauss.local/auth
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+#    ports:
+#      - 8080:8080
+    depends_on:
+      - postgres-keycloak
+    networks:
+      - garuss-network
+
 networks:
   garuss-network:
     driver: bridge
@@ -301,3 +347,4 @@ volumes:
   jenkins-data:
   vault-data:
   consul-data:
+  keycloak-postgress-data:
