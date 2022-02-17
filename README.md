@@ -74,6 +74,7 @@ $ docker-compose logs -f jenkins
 * [Prometheus](https://hub.docker.com/r/prom/prometheus)
 * [Alertmanager](https://hub.docker.com/r/prom/alertmanager)
 * [Jenkins](https://hub.docker.com/r/jenkins/jenkins)
+* [Jenkins Agent](https://hub.docker.com/r/jenkins/inbound-agent)
 * [Fluentd](https://hub.docker.com/_/fluentd)
 * [Vault](https://hub.docker.com/_/vault)
 * [Consul](https://hub.docker.com/_/consul)

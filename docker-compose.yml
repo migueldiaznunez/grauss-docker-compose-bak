@@ -223,7 +223,7 @@ services:
 
   jenkins:
     build:
-      context: jenkins/
+      context: jenkins/master
       args:
         JENKINS_VERSION: $JENKINS_VERSION
     hostname: jenkins
@@ -244,6 +244,27 @@ services:
       options:
         fluentd-address: "tcp://docker.for.mac.localhost:24224" # mac
         # fluentd-address: "tcp://fluentd:24224" # linux
+
+  jenkins-agent:
+    build:
+      context: jenkins/agent/
+      args:
+        JENKINS_AGENT_VERSION: $JENKINS_AGENT_VERSION
+    hostname: jenkins-agent
+    container_name: jenkins-agent
+    environment:
+      JENKINS_URL: http://jenkins:8080/
+      JENKINS_SECRET: 27e1fca2c9ad041771f30eeedc0f47a3542123611e4f631ebb88016c65f3b5d4 # token
+      JENKINS_AGENT_NAME: Test
+      JENKINS_AGENT_WORKDIR: /home/jenkins/agent
+    volumes:
+      - type: volume
+        source: jenkins-agent-data
+        target: /home/jenkins/agent
+    networks:
+      - garuss-network
+    depends_on:
+      - jenkins
 
   vault:
     build:
@@ -345,6 +366,7 @@ volumes:
   elasticsearch-data:
   grafana-data:
   jenkins-data:
+  jenkins-agent-data:
   vault-data:
   consul-data:
   keycloak-postgress-data:
