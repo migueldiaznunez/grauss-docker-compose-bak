@@ -1,0 +1,3 @@
+ARG JENKINS_AGENT_VERSION
+
+FROM jenkins/inbound-agent:${JENKINS_AGENT_VERSION}
