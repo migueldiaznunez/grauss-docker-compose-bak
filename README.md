@@ -55,6 +55,8 @@ Urls:
 |Vault|[http://vault.grauss.local](http://vault.grauss.local)| | |
 |Consul|[http://consul.grauss.local](http://consul.grauss.local)| | |
 |Keycloak|[http://keycloak.grauss.local](http://keycloak.grauss.local)| admin | Pa55w0rd |
+|Gitlab|[http://gitlab.grauss.local](http://gitlab.grauss.local)| root |  |
+
 
 #### Jenkins
 To get the pass:
