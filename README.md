@@ -63,6 +63,13 @@ To get the pass:
 $ docker-compose logs -f jenkins
 ```
 
+#### Gitlab
+To get the pass:
+
+```
+docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password
+```
+
 ### Docker Images
 
 * [Nginx](https://hub.docker.com/_/nginx)
