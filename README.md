@@ -28,7 +28,7 @@ Change the docker daemon:
 
 Add to /etc/hosts file:
 ```
-127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local keycloak.grauss.local
+127.0.0.1 alertmanager.grauss.local grafana.grauss.local jenkins.grauss.local kibana.grauss.local prometheus-fed.grauss.local prometheus.grauss.local vault.grauss.local consul.grauss.local keycloak.grauss.local gitlab.grauss.local
 ```
 
 Use Docker Compose to install this solution
@@ -55,6 +55,8 @@ Urls:
 |Vault|[http://vault.grauss.local](http://vault.grauss.local)| | |
 |Consul|[http://consul.grauss.local](http://consul.grauss.local)| | |
 |Keycloak|[http://keycloak.grauss.local](http://keycloak.grauss.local)| admin | Pa55w0rd |
+|Gitlab|[http://gitlab.grauss.local](http://gitlab.grauss.local)| root |  |
+
 
 #### Jenkins
 To get the pass:
