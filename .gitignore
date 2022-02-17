@@ -1,1 +1,5 @@
 .DS_Store
+gitlab/logs/
+!gitlab/logs/.gitkeep
+gitlab/config/
+!gitlab/config/.gitkeep
